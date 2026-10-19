@@ -1,0 +1,1 @@
+{"name":"gdg-runner","private":true,"type":"module","scripts":{"start":"node worker.js"},"dependencies":{}}

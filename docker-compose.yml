@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gdg_lab
+    ports: ["5432:5432"]
+    volumes: ["gdg_lab_db:/var/lib/postgresql/data"]
+  runner:
+    image: node:22-alpine
+    working_dir: /runner
+    command: ["node","worker.js"]
+    environment:
+      RUNNER_TOKEN: ${RUNNER_TOKEN}
+      RUNNER_WORK_DIR: /var/lib/gdg-runner
+      PORT: "8787"
+    volumes:
+      - ./runner/worker.js:/runner/worker.js:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner_jobs:/var/lib/gdg-runner
+    ports: ["127.0.0.1:8787:8787"]
+    # WARNING: Docker socket access is effectively host-root access.
+    # Do not run this compose service on the same machine as a public web app.
+volumes:
+  gdg_lab_db:
+  runner_jobs:

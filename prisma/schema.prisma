@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Role { STUDENT FACILITATOR }
+enum SubmissionStatus { DRAFT QUEUED RUNNING PASSED FAILED ERROR }
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(STUDENT)
+  createdAt    DateTime @default(now())
+  memberships  TeamMember[]
+  sessions     Session[]
+  submissions  Submission[] @relation("SubmittedBy")
+}
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, expiresAt])
+}
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  joinCode    String   @unique
+  createdById String
+  createdAt   DateTime @default(now())
+  members     TeamMember[]
+  workspace   Workspace?
+  submissions Submission[]
+}
+model TeamMember {
+  id        String   @id @default(cuid())
+  userId    String
+  teamId    String
+  joinedAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  @@unique([userId, teamId])
+  @@index([teamId])
+}
+model Workspace {
+  id        String   @id @default(cuid())
+  teamId    String   @unique
+  files     Json
+  version   Int      @default(1)
+  updatedAt DateTime @updatedAt
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+model Submission {
+  id          String           @id @default(cuid())
+  teamId      String
+  submittedBy String
+  codeSnapshot Json
+  status      SubmissionStatus @default(QUEUED)
+  result      Json?
+  createdAt   DateTime         @default(now())
+  team        Team             @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user        User             @relation("SubmittedBy", fields: [submittedBy], references: [id], onDelete: Restrict)
+  @@index([teamId, createdAt])
+}

@@ -1,0 +1,7 @@
+import Link from "next/link";import {redirect} from "next/navigation";import {currentUser} from "@/lib/auth";import {db} from "@/lib/db";
+export default async function Dashboard(){const user=await currentUser();if(!user)redirect("/login");const memberships=await db.teamMember.findMany({where:{userId:user.id},include:{team:{include:{members:{include:{user:true}},workspace:true}}}});
+return <main className="shell"><div className="row"><h2>Your dashboard</h2><span className="pill">{user.role}</span><span>{user.name}</span></div>
+{user.role==="FACILITATOR"?<div className="card"><h2>Facilitator tools</h2><p>Review team submissions and inspect snapshots.</p><Link href="/facilitator">Open facilitator dashboard</Link></div>:null}
+<div className="grid"><div className="card"><h2>Create a team</h2><form action="/api/teams" method="post"><label>Team name</label><input name="name" maxLength={60} required/><button>Create team</button></form></div><div className="card"><h2>Join a team</h2><form action="/api/teams/join" method="post"><label>Join code</label><input name="joinCode" maxLength={20} required/><button>Join team</button></form></div></div>
+<h2>Your teams</h2>{memberships.length===0?<p className="muted">You have not joined a team yet.</p>:memberships.map(({team})=><div className="card" key={team.id}><div className="row"><h3>{team.name}</h3><span className="pill">Join code: {team.joinCode}</span></div><p className="muted">{team.members.length} member(s)</p><Link href={`/team/${team.id}`}>Open shared workspace →</Link></div>)}
+</main>}
