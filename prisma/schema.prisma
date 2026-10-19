@@ -5,8 +5,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-enum Role { STUDENT FACILITATOR }
-enum SubmissionStatus { DRAFT QUEUED RUNNING PASSED FAILED ERROR }
+enum Role {
+  STUDENT
+  FACILITATOR
+}
+enum SubmissionStatus {
+  DRAFT
+  QUEUED
+  RUNNING
+  PASSED
+  FAILED
+  ERROR
+}
 model User {
   id           String   @id @default(cuid())
   name         String
