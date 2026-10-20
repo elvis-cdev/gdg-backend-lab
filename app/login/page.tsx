@@ -1,1 +1,25 @@
-export default function Login(){return <main className="shell"><div className="card" style={{maxWidth:560,margin:"24px auto"}}><h2>Sign in</h2><form action="/api/auth/login" method="post"><label>Email</label><input name="email" type="email" required/><label>Password</label><input name="password" type="password" required/><button>Sign in</button></form></div></main>}
+import Link from "next/link";
+
+export default function Login() {
+  return (
+    <main className="auth-shell">
+      <section className="card auth-card">
+        <p className="eyebrow">WELCOME BACK</p>
+        <h1>Sign in to your workspace</h1>
+        <p className="muted">
+          Continue working with your team and your backend challenge.
+        </p>
+        <form action="/api/auth/login" method="post">
+          <label htmlFor="email">Email address</label>
+          <input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
+          <label htmlFor="password">Password</label>
+          <input id="password" name="password" type="password" autoComplete="current-password" required />
+          <button type="submit">Sign in →</button>
+        </form>
+        <div className="auth-footer">
+          New to the lab? <Link href="/register">Create an account</Link>
+        </div>
+      </section>
+    </main>
+  );
+}

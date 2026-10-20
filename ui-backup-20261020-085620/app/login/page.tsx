@@ -1,0 +1,1 @@
+export default function Login(){return <main className="shell"><div className="card" style={{maxWidth:560,margin:"24px auto"}}><h2>Sign in</h2><form action="/api/auth/login" method="post"><label>Email</label><input name="email" type="email" required/><label>Password</label><input name="password" type="password" required/><button>Sign in</button></form></div></main>}
