@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 type Props = { teamId: string; initialFiles: Record<string, string> };
+type WorkspaceFiles = Record<string, string>;
 type Tab = "build" | "design" | "curl";
 
 const starterDesign = `# Campus Event System — Team Design
@@ -67,7 +68,7 @@ function shellQuote(value: string) {
 }
 
 export function WorkspaceEditor({ teamId, initialFiles }: Props) {
-  const seedFiles = useMemo(() => ({
+  const seedFiles = useMemo<WorkspaceFiles>(() => ({
     ...initialFiles,
     "DESIGN.md": initialFiles["DESIGN.md"] ?? starterDesign,
     "server.js": initialFiles["server.js"] ?? starterServer,
