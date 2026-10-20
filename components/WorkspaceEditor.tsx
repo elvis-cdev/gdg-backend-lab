@@ -137,7 +137,7 @@ export function WorkspaceEditor({ teamId, initialFiles }: Props) {
 
   return <div className="workspace">
     <div className="tabs" role="tablist" aria-label="Team workspace">
-      <button className={tab === "build" ? "active" : ""} onClick={() => setTab("build")}>Code workspace</button>
+      <button className={tab === "build" ? "active" : ""} onClick={() => { setTab("build"); if (selected === "DESIGN.md") setSelected("server.js"); }}>Code workspace</button>
       <button className={tab === "design" ? "active" : ""} onClick={() => { setTab("design"); setSelected("DESIGN.md"); }}>System designer</button>
       <button className={tab === "curl" ? "active" : ""} onClick={() => setTab("curl")}>API &amp; curl</button>
     </div>
