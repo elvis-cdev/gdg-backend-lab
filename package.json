@@ -9,7 +9,7 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
-    "worker": "tsx runner/worker.ts"
+    "worker": "node runner/worker.cjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",

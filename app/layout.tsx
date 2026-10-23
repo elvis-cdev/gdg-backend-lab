@@ -26,6 +26,7 @@ export default function RootLayout({
             </Link>
             <div className="nav-links">
               <Link href="/">Home</Link>
+              <Link href="/challenge">Session 1 Challenge</Link>
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/facilitator">Facilitator</Link>
               <Link href="/login">Sign in</Link>
